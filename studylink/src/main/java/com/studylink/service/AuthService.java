@@ -4,6 +4,16 @@ import com.studylink.model.User;
 import com.studylink.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+/*
+ * Handles authentication-related functionality including:
+ * - user registration
+ * - user login
+ * - validate credentials
+ * - Manage user profile (TBA)
+ */
+
+// TODO: Replace localStorage auth with secure backend authentication
+
 @Service
 public class AuthService {
 

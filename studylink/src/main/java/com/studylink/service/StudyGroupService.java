@@ -8,6 +8,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/*
+ * Handles study group management functionality including:
+ * - creating study groups
+ * - search study group (TBA)
+ * - join and leave groups (TBA)
+ * - manage group members
+ */
+
+// TODO: Add leave-group functionality
+
+
 @Service
 public class StudyGroupService {
 

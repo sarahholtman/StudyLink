@@ -46,6 +46,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data && data.email) {
+
+                    // Store logged-in user information locally for temporary frontend authentication
                     localStorage.setItem("userId", data.userId);
                     localStorage.setItem("userName", data.name);
                     localStorage.setItem("userEmail", data.email);

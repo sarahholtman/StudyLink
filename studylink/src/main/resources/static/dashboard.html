@@ -19,6 +19,7 @@
         <script>
             const userId = localStorage.getItem("userId");
 
+            // Redirect to login page if user is not authenticated
             if (!userId) {
                 window.location.href = "/login.html";
             }
