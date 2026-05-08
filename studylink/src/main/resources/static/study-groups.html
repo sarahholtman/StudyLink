@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Groups</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Study Groups</h1>
+
+    <h2>Create Study Group</h2>
+
+    <label>Group Name:</label>
+    <input type="text" id="groupName">
+
+    <br><br>
+
+    <label>Course:</label>
+    <input type="text" id="course">
+
+    <br><br>
+
+    <label>Description:</label>
+    <input type="text" id="description">
+
+    <br><br>
+
+    <label>Meeting Time:</label>
+    <input type="text" id="meetingTime">
+
+    <br><br>
+
+    <button onclick="createStudyGroup()">Create Group</button>
+
+    <p id="message"></p>
+
+    <p><a href="/dashboard.html">Back to Dashboard</a></p>
+
+    <h2>Available Study Groups</h2>
+    <button onclick="loadStudyGroups()">Refresh Groups</button>
+
+    <ul id="groupList"></ul>
+
+    <script>
+
+        const loggedInUserId = localStorage.getItem("userId");
+
+        if (!loggedInUserId) {
+            window.location.href = "/login.html";
+        }
+
+        function createStudyGroup() {
+            const userId = localStorage.getItem("userId");
+            const groupName = document.getElementById("groupName").value;
+            const course = document.getElementById("course").value;
+            const description = document.getElementById("description").value;
+            const meetingTime = document.getElementById("meetingTime").value;
+
+            fetch("/api/study-groups", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    groupName: groupName,
+                    course: course,
+                    description: description,
+                    meetingTime: meetingTime,
+                    createdBy: {
+                        userId: userId
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("message").innerText =
+                    "Study group created: " + data.groupName;
+                loadStudyGroups();
+            });
+        }
+
+        function loadStudyGroups() {
+            fetch("/api/study-groups")
+                .then(response => response.json())
+                .then(data => {
+                    const groupList = document.getElementById("groupList");
+                    groupList.innerHTML = "";
+
+                    data.forEach(group => {
+                        const li = document.createElement("li");
+
+                        li.innerHTML =
+                            group.groupName + " | " +
+                            group.course + " | " +
+                            group.description + " | " +
+                            group.meetingTime +
+                            ' <button onclick="joinGroup(' + group.groupId + ')">Join Group</button>';
+
+                        groupList.appendChild(li);
+                    });
+                });
+        }
+
+        loadStudyGroups();
+
+        function joinGroup(groupId) {
+
+            const userId = localStorage.getItem("userId");
+
+            fetch("/api/study-groups/join", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user: {
+                        userId: userId
+                    },
+                    studyGroup: {
+                        groupId: groupId
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Successfully joined group!");
+            });
+        }
+    </script>
+</body>
+</html>

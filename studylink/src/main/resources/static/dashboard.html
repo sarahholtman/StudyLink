@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>StudyLink Dashboard</title>
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <h1>StudyLink Dashboard</h1>
+
+        <p id="welcomeMessage"></p>
+
+        <h2>Navigation</h2>
+
+        <ul>
+            <li><a href="/study-groups.html">Creare and View Study Groups</a></li>
+            <li><button onclick="logout()">Logout</button></li>
+        </ul>
+
+        <script>
+            const userId = localStorage.getItem("userId");
+
+            if (!userId) {
+                window.location.href = "/login.html";
+            }
+
+            const userName = localStorage.getItem("userName");
+
+            if (userName) {
+                document.getElementById("welcomeMessage").innerText =
+                    "Welcome, " + userName + "!";
+            } else {
+                document.getElementById("welcomeMessage").innerText =
+                    "Welcome!";
+            }
+
+            function logout() {
+                localStorage.clear();
+                window.location.href = "/login.html";
+            }
+        </script>
+    </body>
+</html>

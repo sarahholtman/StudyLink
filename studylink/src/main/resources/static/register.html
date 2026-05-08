@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StudyLink Register</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Create Account</h1>
+
+    <label>Name:</label>
+    <input type="text" id="name">
+
+    <br><br>
+
+    <label>Email:</label>
+    <input type="email" id="email">
+
+    <br><br>
+
+    <label>Course:</label>
+    <input type="text" id="course">
+
+    <br><br>
+
+    <label>Password:</label>
+    <input type="password" id="password">
+
+    <br><br>
+
+    <button onclick="register()">Register</button>
+
+    <p id="message"></p>
+
+    <script>
+        function register() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const course = document.getElementById("course").value;
+            const password = document.getElementById("password").value;
+
+            fetch("/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    course: course,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("message").innerText =
+                    "Account created for " + data.name + ". You can now log in.";
+            })
+            .catch(error => {
+                document.getElementById("message").innerText =
+                    "Registration failed.";
+                console.error(error);
+            });
+        }
+    </script>
+</body>
+</html>
