@@ -1,131 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Study Groups</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <title>Find Study Groups - StudyLink</title>
+    <link rel="stylesheet" href="/css/style.css?v=2">
+    <script src="/js/auth-guard.js"></script>
 </head>
 <body>
-    <h1>Study Groups</h1>
 
-    <h2>Create Study Group</h2>
+<header>
+    <h1>StudyLink</h1>
 
-    <label>Group Name:</label>
-    <input type="text" id="groupName">
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="study-groups.html">Find Study Groups</a>
+        <a href="#">Upcoming Sessions</a>
+        <a href="#">Notifications</a>
+    </nav>
 
-    <br><br>
+    <div class="profile-menu">
+        <button id="profileButton" class="profile-button">
+            <span id="dashboardUserName">Student</span>
+            <span class="profile-icon">👤</span>
+        </button>
 
-    <label>Course:</label>
-    <input type="text" id="course">
+        <div id="profileDropdown" class="profile-dropdown">
+            <a href="account.html">My Account</a>
+            <a href="course-settings.html">My Courses</a>
+            <button id="logoutButton">Logout</button>
+        </div>
+    </div>
+</header>
 
-    <br><br>
+<main class="container">
 
-    <label>Description:</label>
-    <input type="text" id="description">
+    <section class="card">
+        <h2>Find Study Groups</h2>
 
-    <br><br>
+        <p>Search for study groups by school, program, or course code. StudyLink can also highlight groups that match your saved courses.</p>
 
-    <label>Meeting Time:</label>
-    <input type="text" id="meetingTime">
+        <div class="group-actions">
+        <button id="openCreateGroupModal">
+            + Create a Study Group
+        </button>
+    </div>
 
-    <br><br>
+    <form id="groupSearchForm" class="filter-form">
+        <div>
+            <label>School</label>
+            <input type="text" id="filterSchool" placeholder="Example: Algonquin College">
+        </div>
 
-    <button onclick="createStudyGroup()">Create Group</button>
+        <div>
+            <label>Program</label>
+            <input type="text" id="filterProgram" placeholder="Example: Computer Programming">
+        </div>
 
-    <p id="message"></p>
+        <div>
+            <label>Course Code</label>
+            <input type="text" id="filterCourseCode" placeholder="Example: CST8319">
+        </div>
 
-    <p><a href="/dashboard.html">Back to Dashboard</a></p>
+        <button type="submit">Search Groups</button>
+    </form>
 
-    <h2>Available Study Groups</h2>
-    <button onclick="loadStudyGroups()">Refresh Groups</button>
+        <div id="studyGroupResults">
+            <p>Study groups will appear here.</p>
+        </div>
 
-    <ul id="groupList"></ul>
+        <div class="pagination-controls">
+            <button id="prevPage">Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button id="nextPage">Next</button>
+        </div>
+    </section>
 
-    <script>
+    <section class="card">
+        <h2>Recommended Matches</h2>
 
-        const loggedInUserId = localStorage.getItem("userId");
+        <div id="recommendedGroups">
+            <p>No recommended groups found yet.</p>
+        </div>
+    </section>
 
-        // Redirect to login page if user is not authenticated
-        if (!loggedInUserId) {
-            window.location.href = "/login.html";
-        }
+    <div id="createGroupModal" class="modal">
 
-        function createStudyGroup() {
-            const userId = localStorage.getItem("userId");
-            const groupName = document.getElementById("groupName").value;
-            const course = document.getElementById("course").value;
-            const description = document.getElementById("description").value;
-            const meetingTime = document.getElementById("meetingTime").value;
+    <div class="modal-content">
 
-            fetch("/api/study-groups", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    groupName: groupName,
-                    course: course,
-                    description: description,
-                    meetingTime: meetingTime,
-                    createdBy: {
-                        userId: userId
-                    }
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("message").innerText =
-                    "Study group created: " + data.groupName;
-                loadStudyGroups();
-            });
-        }
+        <div class="modal-header">
+            <h2>Create Study Group</h2>
 
-        function loadStudyGroups() {
-            fetch("/api/study-groups")
-                .then(response => response.json())
-                .then(data => {
-                    const groupList = document.getElementById("groupList");
-                    groupList.innerHTML = "";
+            <span id="closeModal" class="close-button">
+                &times;
+            </span>
+        </div>
 
-                    data.forEach(group => {
-                        const li = document.createElement("li");
+        <form id="createGroupForm">
 
-                        li.innerHTML =
-                            group.groupName + " | " +
-                            group.course + " | " +
-                            group.description + " | " +
-                            group.meetingTime +
-                            ' <button onclick="joinGroup(' + group.groupId + ')">Join Group</button>';
+            <label>Group Name</label>
+            <input type="text" id="groupName" required>
 
-                        groupList.appendChild(li);
-                    });
-                });
-        }
+            <label>Course Code</label>
+            <input type="text" id="groupCourseCode" required>
 
-        loadStudyGroups();
+            <label>School</label>
+            <input type="text" id="groupSchool" required>
 
-        function joinGroup(groupId) {
+            <label>Program / Course Name</label>
+            <input type="text" id="groupCourseName" required>
 
-            const userId = localStorage.getItem("userId");
+            <label>Section</label>
+            <input type="text" id="groupSection">
 
-            fetch("/api/study-groups/join", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    user: {
-                        userId: userId
-                    },
-                    studyGroup: {
-                        groupId: groupId
-                    }
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert("Successfully joined group!");
-            });
-        }
-    </script>
+            <label>Meeting Time</label>
+            <input type="text" id="groupMeetingTime">
+
+            <label>Description</label>
+            <textarea id="groupDescription"></textarea>
+
+            <button type="submit">
+                Create Group
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</main>
+
+<script src="/js/profile-menu.js"></script>
+<script src="/js/study-groups.js"></script>
+<script>
+    const userName = localStorage.getItem("userName");
+
+    if (userName) {
+        document.getElementById("dashboardUserName").textContent = userName;
+    }
+</script>
+
 </body>
 </html>

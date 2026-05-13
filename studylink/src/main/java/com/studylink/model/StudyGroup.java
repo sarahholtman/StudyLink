@@ -83,7 +83,7 @@ public class StudyGroup {
         return schoolName;
     }
 
-    public void setSchool(String schoolName) {
+    public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
     }
 

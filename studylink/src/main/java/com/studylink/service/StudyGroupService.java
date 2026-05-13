@@ -51,4 +51,22 @@ public class StudyGroupService {
     public List<GroupMembership> getMembershipsByGroupId(Long groupId) {
         return groupMembershipRepository.findByStudyGroup_GroupId(groupId);
     }
+
+    public List<StudyGroup> searchStudyGroups(
+        String schoolName,
+        String courseName,
+        String courseCode
+    ) {
+
+        return studyGroupRepository
+                .findBySchoolNameContainingIgnoreCaseOrCourseNameContainingIgnoreCaseOrCourseCodeContainingIgnoreCase(
+                        schoolName,
+                        courseName,
+                        courseCode
+                );
+    }
+
+    public StudyGroup getStudyGroupById(Long groupId) {
+        return studyGroupRepository.findById(groupId).orElse(null);
+    }
 }

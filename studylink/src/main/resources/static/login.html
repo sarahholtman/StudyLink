@@ -1,69 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>StudyLink Login</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <title>Login - StudyLink</title>
+    <link rel="stylesheet" href="/css/style.css?v=2">
 </head>
 <body>
-    <h1>StudyLink Login</h1>
 
-    <label>Email:</label>
-    <input type="email" id="email">
+<header>
+    <h1>StudyLink</h1>
 
-    <br><br>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="login.html">Login</a>
+        <a href="study-groups.html">Study Groups</a>
+    </nav>
+</header>
 
-    <label>Password:</label>
-    <input type="password" id="password">
+<main class="container">
 
-    <br><br>
+    <section class="card" style="max-width: 500px; margin: 60px auto;">
 
-    <button onclick="login()">Login</button>
+        <h2>Login</h2>
 
-    <br><br>
+        <form id="loginForm">
 
-    <p>
-        Don&apos;t have an account?
-        <a href="/register.html">Register here</a>
-    </p>
+            <label>Email</label>
+            <input type="email" id="loginEmail" required>
 
-    <p id="message"></p>
+            <label>Password</label>
+            <input type="password" id="loginPassword" required>
 
-    <script>
-        function login() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+            <button type="submit">Login</button>
 
-            fetch("/api/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data && data.email) {
+        </form>
 
-                    // Store logged-in user information locally for temporary frontend authentication
-                    localStorage.setItem("userId", data.userId);
-                    localStorage.setItem("userName", data.name);
-                    localStorage.setItem("userEmail", data.email);
+        <p id="loginMessage"></p>
 
-                    window.location.href = "/dashboard.html";
-                } else {
-                    document.getElementById("message").innerText =
-                        "Invalid credentials.";
-                }
-            })
-            .catch(error => {
-                document.getElementById("message").innerText =
-                    "Login failed. Check the console.";
-                console.error(error);
-            });
-        }
-    </script>
+    </section>
+
+</main>
+
+<script src="/js/auth.js"></script>
+
 </body>
 </html>

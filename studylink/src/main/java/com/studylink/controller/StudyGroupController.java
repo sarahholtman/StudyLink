@@ -28,6 +28,15 @@ public class StudyGroupController {
         return studyGroupService.getAllStudyGroups();
     }
 
+    @GetMapping("/search")
+    public List<StudyGroup> searchStudyGroups(
+            @RequestParam(required = false, defaultValue = "") String schoolName,
+            @RequestParam(required = false, defaultValue = "") String courseName,
+            @RequestParam(required = false, defaultValue = "") String courseCode
+    ) {
+        return studyGroupService.searchStudyGroups(schoolName, courseName, courseCode);
+    }
+
     @PostMapping("/join")
     public GroupMembership joinGroup(@RequestBody GroupMembership membership) {
         return studyGroupService.joinGroup(membership);

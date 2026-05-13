@@ -1,66 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>StudyLink Register</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <title>Register - StudyLink</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Create Account</h1>
 
-    <label>Name:</label>
-    <input type="text" id="name">
+<header>
+    <h1>StudyLink</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="login.html">Login</a>
+        <a href="study-groups.html">Study Groups</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+</header>
 
-    <br><br>
+<main class="container">
+    <section class="card">
+        <h2>Create Account</h2>
 
-    <label>Email:</label>
-    <input type="email" id="email">
+        <form id="registerForm">
 
-    <br><br>
+            <label>Full Name</label>
+            <input type="text" id="name" required>
 
-    <label>Course:</label>
-    <input type="text" id="course">
+            <label>Email</label>
+            <input type="email" id="email" required>
 
-    <br><br>
+            <label>Password</label>
+            <input type="password" id="password" required>
 
-    <label>Password:</label>
-    <input type="password" id="password">
+            <button type="submit">Register</button>
 
-    <br><br>
+        </form>
 
-    <button onclick="register()">Register</button>
+        <p id="message"></p>
 
-    <p id="message"></p>
+    </section>
+</main>
 
-    <script>
-        function register() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const course = document.getElementById("course").value;
-            const password = document.getElementById("password").value;
+<script src="js/auth.js"></script>
 
-            fetch("/api/auth/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    course: course,
-                    password: password
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("message").innerText =
-                    "Account created for " + data.name + ". You can now log in.";
-            })
-            .catch(error => {
-                document.getElementById("message").innerText =
-                    "Registration failed.";
-                console.error(error);
-            });
-        }
-    </script>
 </body>
 </html>
