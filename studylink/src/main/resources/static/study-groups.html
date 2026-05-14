@@ -26,7 +26,7 @@
 
         <div id="profileDropdown" class="profile-dropdown">
             <a href="account.html">My Account</a>
-            <a href="course-settings.html">My Courses</a>
+            <a href="my-course.html">My Courses</a>
             <button id="logoutButton">Logout</button>
         </div>
     </div>
@@ -97,23 +97,20 @@
 
         <form id="createGroupForm">
 
-            <label>Group Name</label>
+            <label class="required-field">Group Name</label>
             <input type="text" id="groupName" required>
 
-            <label>Course Code</label>
+            <label class="required-field">Course Code</label>
             <input type="text" id="groupCourseCode" required>
 
-            <label>School</label>
+            <label class="required-field">School</label>
             <input type="text" id="groupSchool" required>
 
-            <label>Program / Course Name</label>
+            <label class="required-field">Program / Course Name</label>
             <input type="text" id="groupCourseName" required>
 
             <label>Section</label>
             <input type="text" id="groupSection">
-
-            <label>Meeting Time</label>
-            <input type="text" id="groupMeetingTime">
 
             <label>Description</label>
             <textarea id="groupDescription"></textarea>

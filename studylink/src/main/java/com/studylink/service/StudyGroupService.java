@@ -53,17 +53,33 @@ public class StudyGroupService {
     }
 
     public List<StudyGroup> searchStudyGroups(
-        String schoolName,
-        String courseName,
-        String courseCode
+            String schoolName,
+            String courseName,
+            String courseCode
     ) {
+        String schoolSearch = schoolName == null ? "" : schoolName.trim().toLowerCase();
+        String courseNameSearch = courseName == null ? "" : courseName.trim().toLowerCase();
+        String courseCodeSearch = courseCode == null ? "" : courseCode.trim().toLowerCase();
 
-        return studyGroupRepository
-                .findBySchoolNameContainingIgnoreCaseOrCourseNameContainingIgnoreCaseOrCourseCodeContainingIgnoreCase(
-                        schoolName,
-                        courseName,
-                        courseCode
-                );
+        return studyGroupRepository.findAll()
+                .stream()
+                .filter(group -> {
+                    String groupSchool = group.getSchoolName() == null ? "" : group.getSchoolName().toLowerCase();
+                    String groupCourseName = group.getCourseName() == null ? "" : group.getCourseName().toLowerCase();
+                    String groupCourseCode = group.getCourseCode() == null ? "" : group.getCourseCode().toLowerCase();
+
+                    boolean matchesSchool =
+                            schoolSearch.isBlank() || groupSchool.contains(schoolSearch);
+
+                    boolean matchesCourseName =
+                            courseNameSearch.isBlank() || groupCourseName.contains(courseNameSearch);
+
+                    boolean matchesCourseCode =
+                            courseCodeSearch.isBlank() || groupCourseCode.contains(courseCodeSearch);
+
+                    return matchesSchool && matchesCourseName && matchesCourseCode;
+                })
+                .toList();
     }
 
     public StudyGroup getStudyGroupById(Long groupId) {

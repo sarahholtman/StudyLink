@@ -91,6 +91,10 @@ form {
     max-width: 520px;
 }
 
+.filter-form {
+    max-width: none;
+}
+
 label {
     display: block;
     font-weight: bold;
@@ -336,13 +340,34 @@ button:hover {
 
 .filter-form {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    align-items: end;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 28px;
+    align-items: stretch;
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    max-width: none;
+}
+
+.filter-form input {
+    width: 100%;
 }
 
 .filter-form button {
-    margin-bottom: 18px;
+    min-width: 180px;
+    height: 54px;
+    margin-top: 18px;
+    margin-bottom: 0;
+}
+
+.filter-form div {
+    display: flex;
+    flex-direction: column;
+}
+
+.required-field::after {
+    content: " *";
+    color: red;
 }
 
 .group-card {
