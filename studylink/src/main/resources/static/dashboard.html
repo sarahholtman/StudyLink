@@ -15,7 +15,7 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="study-groups.html">Find Study Groups</a>
         <a href="#">Upcoming Sessions</a>
-        <a href="#">Notifications</a>
+        <a href="notifications.html">Notifications</a>
     </nav>
 
     <div class="profile-menu">
@@ -64,19 +64,8 @@
         </div>
 
         <div class="card">
-            <h2>Notifications</h2>
-
-            <div class="notification">
-                New study session added to Database Systems.
-            </div>
-
-            <div class="notification">
-                You have joined Software Development Project.
-            </div>
-
-            <div class="notification">
-                New message posted in your study group.
-            </div>
+			<div id="notificationsContainerLimited"></div>
+			<a href="notifications.html">View more</a>
         </div>
 
         <div class="card">
@@ -135,6 +124,7 @@
 
 <script src="/js/auth.js"></script>
 <script src="/js/profile-menu.js"></script>
+<script src="/js/dashboard-notifications.js"></script>
 
 <script>
     const storedName = localStorage.getItem("userName");
