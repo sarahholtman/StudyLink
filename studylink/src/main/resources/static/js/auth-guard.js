@@ -1,7 +1,8 @@
 const protectedPages = [
     "/dashboard.html",
     "/my-courses.html",
-    "/study-groups.html"
+    "/study-groups.html",
+    "/my-study-groups.html"
 ];
 
 const currentPage = window.location.pathname;

@@ -3,6 +3,8 @@ package com.studylink.controller;
 import com.studylink.model.GroupMembership;
 import com.studylink.model.StudyGroup;
 import com.studylink.service.StudyGroupService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,8 +40,15 @@ public class StudyGroupController {
     }
 
     @PostMapping("/join")
-    public GroupMembership joinGroup(@RequestBody GroupMembership membership) {
-        return studyGroupService.joinGroup(membership);
+    public ResponseEntity<GroupMembership> joinGroup(@RequestBody GroupMembership membership) {
+
+        GroupMembership savedMembership = studyGroupService.joinGroup(membership);
+
+        if (savedMembership == null) {
+            return ResponseEntity.status(409).build();
+        }
+
+        return ResponseEntity.ok(savedMembership);
     }
 
     @GetMapping("/user/{userId}")
@@ -55,5 +64,13 @@ public class StudyGroupController {
     @GetMapping("/{groupId}/members")
     public List<GroupMembership> getMembershipsByGroupId(@PathVariable Long groupId) {
         return studyGroupService.getMembershipsByGroupId(groupId);
+    }
+
+    @DeleteMapping("/{groupId}/leave/{userId}")
+    public void leaveGroup(
+            @PathVariable Long groupId,
+            @PathVariable Long userId
+    ) {
+        studyGroupService.leaveGroup(userId, groupId);
     }
 }

@@ -11,38 +11,56 @@ const recommendedGroups = document.getElementById("recommendedGroups");
 const searchForm = document.getElementById("groupSearchForm");
 const createGroupForm = document.getElementById("createGroupForm");
 
+const alreadyMemberModal = document.getElementById("alreadyMemberModal");
+const closeAlreadyMemberModal = document.getElementById("closeAlreadyMemberModal");
+const goToExistingGroupDetailsButton = document.getElementById("goToExistingGroupDetailsButton");
+
 let joinedGroupId = null;
 
 var studyGroupCurrentPage = 1;
 const groupsPerPage = 10;
 
 if (openModalButton) {
-    openModalButton.addEventListener("click", function() {
+    openModalButton.addEventListener("click", function () {
         modal.style.display = "block";
     });
 }
 
 if (closeModalButton) {
-    closeModalButton.addEventListener("click", function() {
+    closeModalButton.addEventListener("click", function () {
         modal.style.display = "none";
     });
 }
 
 if (closeJoinModal) {
-    closeJoinModal.addEventListener("click", function() {
+    closeJoinModal.addEventListener("click", function () {
         joinSuccessModal.style.display = "none";
     });
 }
 
 if (goToGroupDetailsButton) {
-    goToGroupDetailsButton.addEventListener("click", function() {
+    goToGroupDetailsButton.addEventListener("click", function () {
         if (joinedGroupId) {
             window.location.href = `/group-details.html?groupId=${joinedGroupId}`;
         }
     });
 }
 
-window.addEventListener("click", function(event) {
+if (closeAlreadyMemberModal) {
+    closeAlreadyMemberModal.addEventListener("click", function () {
+        alreadyMemberModal.style.display = "none";
+    });
+}
+
+if (goToExistingGroupDetailsButton) {
+    goToExistingGroupDetailsButton.addEventListener("click", function () {
+        if (joinedGroupId) {
+            window.location.href = `/group-details.html?groupId=${joinedGroupId}`;
+        }
+    });
+}
+
+window.addEventListener("click", function (event) {
 
     if (event.target === modal) {
         modal.style.display = "none";
@@ -50,6 +68,10 @@ window.addEventListener("click", function(event) {
 
     if (event.target === joinSuccessModal) {
         joinSuccessModal.style.display = "none";
+    }
+
+    if (event.target === alreadyMemberModal) {
+        alreadyMemberModal.style.display = "none";
     }
 });
 
@@ -110,7 +132,7 @@ function displayStudyGroups(groups) {
 
 if (searchForm) {
 
-    searchForm.addEventListener("submit", async function(event) {
+    searchForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
@@ -130,14 +152,14 @@ if (searchForm) {
     });
 }
 
-document.getElementById("prevPage").addEventListener("click", function() {
+document.getElementById("prevPage").addEventListener("click", function () {
     if (studyGroupCurrentPage > 1) {
         studyGroupCurrentPage--;
         loadAllStudyGroups();
     }
 });
 
-document.getElementById("nextPage").addEventListener("click", function() {
+document.getElementById("nextPage").addEventListener("click", function () {
     studyGroupCurrentPage++;
     loadAllStudyGroups();
 });
@@ -214,7 +236,7 @@ async function loadRecommendedGroups() {
 
 if (createGroupForm) {
 
-    createGroupForm.addEventListener("submit", async function(event) {
+    createGroupForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
@@ -306,6 +328,12 @@ async function joinStudyGroup(groupId) {
 
         loadAllStudyGroups();
         loadRecommendedGroups();
+
+    } else if (response.status === 409) {
+
+        joinedGroupId = groupId;
+
+        alreadyMemberModal.style.display = "block";
 
     } else {
 

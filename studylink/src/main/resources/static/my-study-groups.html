@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>My Courses - StudyLink</title>
+    <title>My Study Groups - StudyLink</title>
     <link rel="stylesheet" href="/css/style.css?v=2">
     <script src="/js/auth-guard.js"></script>
 </head>
@@ -38,42 +38,19 @@
     <main class="container">
 
         <section class="card">
-            <h2>My Courses</h2>
-            <p>Add the courses you are currently taking so StudyLink can help match you with relevant study groups.</p>
-        </section>
+            <h2>My Study Groups</h2>
+            <p>View and manage all study groups you have joined.</p>
 
-        <section class="dashboard-grid">
-
-            <div class="card">
-                <h2>Add Course</h2>
-
-                <form id="courseForm">
-                    <label>Course Code</label>
-                    <input type="text" id="courseCode" placeholder="Example: CST8319" required>
-
-                    <label>School</label>
-                    <input type="text" id="school" placeholder="Example: Algonquin College" required>
-
-                    <label>Program</label>
-                    <input type="text" id="program" placeholder="Example: Computer Programming" required>
-
-                    <button type="submit">Add Course</button>
-                </form>
+            <div id="allMyStudyGroups">
+                <p>Your study groups will appear here.</p>
             </div>
-
-            <div class="card">
-                <h2>My Active Courses</h2>
-                <div id="courseList">
-                    <p>No courses added yet.</p>
-                </div>
-            </div>
-
         </section>
 
     </main>
 
     <script src="/js/profile-menu.js"></script>
-    <script src="/js/profile.js"></script>
+    <script src="/js/my-study-groups.js"></script>
+
     <script>
         const userName = localStorage.getItem("userName");
 
