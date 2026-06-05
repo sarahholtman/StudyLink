@@ -13,8 +13,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.studylink.model.GroupMembership;
 import com.studylink.model.Notification;
 import com.studylink.model.User;
+import com.studylink.repository.GroupMembershipRepository;
 import com.studylink.repository.NotificationRepository;
 import com.studylink.repository.UserRepository;
 
@@ -26,6 +28,9 @@ public class NotificationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GroupMembershipRepository groupMembershipRepository;
 
     public List<Notification> getNotificationsForUser(Long userId) {
 
@@ -49,5 +54,22 @@ public class NotificationService {
         notification.setDateSent(LocalDate.now());
 
         return notificationRepository.save(notification);
+    }
+
+    public void createGroupNotification(
+            Long groupId,
+            String message,
+            String type) {
+
+        List<GroupMembership> memberships =
+                groupMembershipRepository.findByStudyGroup_GroupId(groupId);
+
+        for (GroupMembership membership : memberships) {
+            User user = membership.getUser();
+
+            if (user != null && user.getUserId() != null) {
+                createNotification(user.getUserId(), message, type);
+            }
+        }
     }
 }
