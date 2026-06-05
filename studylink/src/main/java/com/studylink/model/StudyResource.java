@@ -21,12 +21,13 @@ public class StudyResource {
 
     private String fileName;
 
+    private String resourceUrl;
+
     private String fileType;
 
     private LocalDate uploadDate;
 
-    public StudyResource() {
-    }
+    public StudyResource() {}
 
     public Long getResourceId() {
         return resourceId;
@@ -58,6 +59,14 @@ public class StudyResource {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getResourceUrl() {
+        return resourceUrl;
+    }
+
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl;
     }
 
     public String getFileType() {
