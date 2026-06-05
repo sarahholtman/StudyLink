@@ -6,6 +6,7 @@ import com.studylink.repository.GroupMembershipRepository;
 import com.studylink.repository.StudyGroupRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /*
@@ -41,6 +42,19 @@ public class StudyGroupService {
     }
 
     public GroupMembership joinGroup(GroupMembership membership) {
+
+        Long userId = membership.getUser().getUserId();
+        Long groupId = membership.getStudyGroup().getGroupId();
+
+        boolean alreadyMember =
+                groupMembershipRepository.existsByUser_UserIdAndStudyGroup_GroupId(userId, groupId);
+
+        if (alreadyMember) {
+            return null;
+        }
+
+        membership.setJoinedDate(LocalDate.now());
+
         return groupMembershipRepository.save(membership);
     }
 
@@ -84,5 +98,15 @@ public class StudyGroupService {
 
     public StudyGroup getStudyGroupById(Long groupId) {
         return studyGroupRepository.findById(groupId).orElse(null);
+    }
+
+    public void leaveGroup(Long userId, Long groupId) {
+
+        List<GroupMembership> memberships =
+                groupMembershipRepository.findByUser_UserIdAndStudyGroup_GroupId(userId, groupId);
+
+        if (!memberships.isEmpty()) {
+            groupMembershipRepository.deleteAll(memberships);
+        }
     }
 }

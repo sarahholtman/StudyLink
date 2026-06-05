@@ -1,44 +1,83 @@
 const modal = document.getElementById("createGroupModal");
+const openModalButton = document.getElementById("openCreateGroupModal");
+const closeModalButton = document.getElementById("closeModal");
 
-const openModalButton =
-    document.getElementById("openCreateGroupModal");
+const joinSuccessModal = document.getElementById("joinSuccessModal");
+const closeJoinModal = document.getElementById("closeJoinModal");
+const goToGroupDetailsButton = document.getElementById("goToGroupDetailsButton");
 
-const closeModalButton =
-    document.getElementById("closeModal");
+const groupResults = document.getElementById("studyGroupResults");
+const recommendedGroups = document.getElementById("recommendedGroups");
+const searchForm = document.getElementById("groupSearchForm");
+const createGroupForm = document.getElementById("createGroupForm");
+
+const alreadyMemberModal = document.getElementById("alreadyMemberModal");
+const closeAlreadyMemberModal = document.getElementById("closeAlreadyMemberModal");
+const goToExistingGroupDetailsButton = document.getElementById("goToExistingGroupDetailsButton");
+
+let joinedGroupId = null;
+
+var studyGroupCurrentPage = 1;
+const groupsPerPage = 10;
 
 if (openModalButton) {
-
-    openModalButton.addEventListener("click", function() {
+    openModalButton.addEventListener("click", function () {
         modal.style.display = "block";
     });
 }
 
 if (closeModalButton) {
-
-    closeModalButton.addEventListener("click", function() {
+    closeModalButton.addEventListener("click", function () {
         modal.style.display = "none";
     });
 }
 
-window.addEventListener("click", function(event) {
+if (closeJoinModal) {
+    closeJoinModal.addEventListener("click", function () {
+        joinSuccessModal.style.display = "none";
+    });
+}
+
+if (goToGroupDetailsButton) {
+    goToGroupDetailsButton.addEventListener("click", function () {
+        if (joinedGroupId) {
+            window.location.href = `/group-details.html?groupId=${joinedGroupId}`;
+        }
+    });
+}
+
+if (closeAlreadyMemberModal) {
+    closeAlreadyMemberModal.addEventListener("click", function () {
+        alreadyMemberModal.style.display = "none";
+    });
+}
+
+if (goToExistingGroupDetailsButton) {
+    goToExistingGroupDetailsButton.addEventListener("click", function () {
+        if (joinedGroupId) {
+            window.location.href = `/group-details.html?groupId=${joinedGroupId}`;
+        }
+    });
+}
+
+window.addEventListener("click", function (event) {
 
     if (event.target === modal) {
         modal.style.display = "none";
     }
+
+    if (event.target === joinSuccessModal) {
+        joinSuccessModal.style.display = "none";
+    }
+
+    if (event.target === alreadyMemberModal) {
+        alreadyMemberModal.style.display = "none";
+    }
 });
-
-const groupResults = document.getElementById("studyGroupResults");
-const recommendedGroups = document.getElementById("recommendedGroups");
-
-const searchForm = document.getElementById("groupSearchForm");
-
-var studyGroupCurrentPage = 1;
-const groupsPerPage = 10;
 
 async function loadAllStudyGroups() {
 
     const response = await fetch("/api/study-groups");
-
     const groups = await response.json();
 
     displayStudyGroups(groups);
@@ -61,7 +100,6 @@ function displayStudyGroups(groups) {
     paginatedGroups.forEach(group => {
 
         const card = document.createElement("div");
-
         card.classList.add("group-card");
 
         card.innerHTML = `
@@ -94,14 +132,12 @@ function displayStudyGroups(groups) {
 
 if (searchForm) {
 
-    searchForm.addEventListener("submit", async function(event) {
+    searchForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
         const schoolName = document.getElementById("filterSchool").value.trim();
-
         const courseName = document.getElementById("filterProgram").value.trim();
-
         const courseCode = document.getElementById("filterCourseCode").value.trim();
 
         const response = await fetch(
@@ -116,14 +152,14 @@ if (searchForm) {
     });
 }
 
-document.getElementById("prevPage").addEventListener("click", function() {
+document.getElementById("prevPage").addEventListener("click", function () {
     if (studyGroupCurrentPage > 1) {
         studyGroupCurrentPage--;
         loadAllStudyGroups();
     }
 });
 
-document.getElementById("nextPage").addEventListener("click", function() {
+document.getElementById("nextPage").addEventListener("click", function () {
     studyGroupCurrentPage++;
     loadAllStudyGroups();
 });
@@ -137,7 +173,6 @@ async function loadRecommendedGroups() {
     }
 
     const response = await fetch(`/api/user-courses/${userId}`);
-
     const courses = await response.json();
 
     recommendedGroups.innerHTML = "";
@@ -179,7 +214,6 @@ async function loadRecommendedGroups() {
     matchedGroups.forEach(group => {
 
         const card = document.createElement("div");
-
         card.classList.add("group-card");
 
         card.innerHTML = `
@@ -200,15 +234,9 @@ async function loadRecommendedGroups() {
     });
 }
 
-loadAllStudyGroups();
-loadRecommendedGroups();
-
-const createGroupForm =
-    document.getElementById("createGroupForm");
-
 if (createGroupForm) {
 
-    createGroupForm.addEventListener("submit", async function(event) {
+    createGroupForm.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
@@ -216,26 +244,17 @@ if (createGroupForm) {
 
         const studyGroup = {
 
-            groupName:
-                document.getElementById("groupName").value,
+            groupName: document.getElementById("groupName").value,
 
-            courseCode:
-                document.getElementById("groupCourseCode").value,
+            courseCode: document.getElementById("groupCourseCode").value,
 
-            schoolName:
-                document.getElementById("groupSchool").value,
+            schoolName: document.getElementById("groupSchool").value,
 
-            courseName:
-                document.getElementById("groupCourseName").value,
+            courseName: document.getElementById("groupCourseName").value,
 
-            section:
-                document.getElementById("groupSection").value,
+            section: document.getElementById("groupSection").value,
 
-            meetingTime:
-                document.getElementById("groupMeetingTime").value,
-
-            description:
-                document.getElementById("groupDescription").value,
+            description: document.getElementById("groupDescription").value,
 
             createdBy: {
                 userId: userId
@@ -262,7 +281,6 @@ if (createGroupForm) {
             studyGroupCurrentPage = 1;
 
             loadAllStudyGroups();
-
             loadRecommendedGroups();
 
         } else {
@@ -273,6 +291,7 @@ if (createGroupForm) {
 }
 
 async function joinStudyGroup(groupId) {
+
     const userId = localStorage.getItem("userId");
 
     if (!userId) {
@@ -291,16 +310,36 @@ async function joinStudyGroup(groupId) {
     };
 
     const response = await fetch("/api/study-groups/join", {
+
         method: "POST",
+
         headers: {
             "Content-Type": "application/json"
         },
+
         body: JSON.stringify(membership)
     });
 
     if (response.ok) {
-        alert("You joined this study group.");
+
+        joinedGroupId = groupId;
+
+        joinSuccessModal.style.display = "block";
+
+        loadAllStudyGroups();
+        loadRecommendedGroups();
+
+    } else if (response.status === 409) {
+
+        joinedGroupId = groupId;
+
+        alreadyMemberModal.style.display = "block";
+
     } else {
+
         alert("Could not join this study group.");
     }
 }
+
+loadAllStudyGroups();
+loadRecommendedGroups();
