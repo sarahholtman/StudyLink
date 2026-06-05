@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications - StudyLink</title>
+    <link rel="stylesheet" href="/css/style.css?v=2">
+    <script src="/js/auth-guard.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>StudyLink</h1>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="study-groups.html">Find Study Groups</a>
+        <a href="#">Upcoming Sessions</a>
+        <a href="notifications.html">Notifications</a>
+    </nav>
+
+    <div class="profile-menu">
+        <button id="profileButton" class="profile-button">
+            <span id="dashboardUserName">Student</span>
+            <span class="profile-icon">👤</span>
+        </button>
+
+        <div id="profileDropdown" class="profile-dropdown">
+            <a href="account.html">My Account</a>
+            <a href="course-settings.html">My Courses</a>
+            <button id="logoutButton">Logout</button>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>Notifications:</h2>
+
+		<div id="notificationsContainer"></div>
+    </section>
+
+
+
+</main>
+
+<script src="/js/profile-menu.js"></script>
+<script src="/js/notifications.js"></script>
+
+<script>
+    const userName = localStorage.getItem("userName");
+
+    if (userName) {
+        document.getElementById("dashboardUserName").textContent = userName;
+    }
+</script>
+
+</body>
+</html>
