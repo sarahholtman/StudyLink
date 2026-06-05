@@ -188,7 +188,10 @@
                 <h3>${group.groupName}</h3>
                 <p><strong>Course Code:</strong> ${group.courseCode || "N/A"}</p>
                 <p><strong>School:</strong> ${group.schoolName || "N/A"}</p>
-                <button>View Group</button>
+
+                <button onclick="window.location.href='group-details.html?groupId=${group.groupId}'">
+                    View Group
+                </button>
             `;
 
             myStudyGroups.appendChild(item);

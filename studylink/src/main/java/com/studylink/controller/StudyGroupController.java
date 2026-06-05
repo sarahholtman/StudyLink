@@ -47,6 +47,11 @@ public class StudyGroupController {
         return studyGroupService.getMembershipsByUserId(userId);
     }
 
+    @GetMapping("/{groupId}")
+    public StudyGroup getStudyGroupById(@PathVariable Long groupId) {
+        return studyGroupService.getStudyGroupById(groupId);
+    }
+
     @GetMapping("/{groupId}/members")
     public List<GroupMembership> getMembershipsByGroupId(@PathVariable Long groupId) {
         return studyGroupService.getMembershipsByGroupId(groupId);
