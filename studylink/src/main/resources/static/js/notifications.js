@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const response = await fetch(`http://localhost:8080/api/notifications/user/${userId}`);
+        const response = await fetch(`api/notifications/user/${userId}`);
 
         if (!response.ok) {
             throw new Error("Failed to load notifications");
