@@ -22,4 +22,15 @@ public class NotificationController {
         return notificationService
                 .getNotificationsForUser(userId);
     }
+
+    @PostMapping("/group/{groupId}")
+    public void createGroupNotification(
+            @PathVariable Long groupId,
+            @RequestBody Notification notification) {
+
+        notificationService.createGroupNotification(
+                groupId,
+                notification.getMessage(),
+                notification.getType());
+    }
 }
