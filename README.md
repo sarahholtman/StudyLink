@@ -1,29 +1,36 @@
 # StudyLink
 
-StudyLink is a web app that helps students find and join study groups for their courses. Users can create an account, add their courses, search for study groups, join groups, and view their joined groups from the dashboard.
+StudyLink is a web app that helps students find and join study groups for their courses. Users can create an account, add their courses, search for study groups, create or join groups, view group details, share resources, view notifications, and view upcoming sessions from the dashboard and upcoming sessions page.
 
 This version was built as a prototype for the current project phase. The backend uses Spring Boot with a MySQL database, and the frontend uses static HTML, CSS, and JavaScript pages.
 
 ## Features
 
-- User registration
-- Basic prototype sign-in flow
-- Dashboard for users
-- Add and view user courses
-- Search for study groups by school, course/program name, or course code
-- Join study groups
-- View joined study groups from the dashboard
-- Backend support for group messages
-- Early notification/session model structure
+* User registration
+* Basic prototype sign-in flow
+* Dashboard for users
+* Add, view, and delete user courses
+* Search for study groups by school, course/program name, or course code
+* Recommended study groups based on saved user courses
+* Create study groups
+* Join and leave study groups
+* View joined study groups from the dashboard
+* View group details and group members
+* Share and view study resources
+* View notifications
+* View a limited notification widget on the dashboard
+* Generate notifications for some group activity
+* View upcoming sessions on the dashboard and upcoming sessions page
+* Backend support for group messages
 
 ## Tech Used
 
-- Java 21
-- Spring Boot
-- Spring Data JPA
-- MySQL
-- Maven Wrapper
-- HTML, CSS, and JavaScript
+* Java 21
+* Spring Boot
+* Spring Data JPA
+* MySQL
+* Maven Wrapper
+* HTML, CSS, and JavaScript
 
 ## Project Structure
 
@@ -31,21 +38,21 @@ The main Spring Boot project is inside the `studylink` folder.
 
 Main folders and files:
 
-- `src/main/java/com/studylink/controller` — handles API requests
-- `src/main/java/com/studylink/model` — contains the entity/model classes
-- `src/main/java/com/studylink/repository` — contains database repositories
-- `src/main/java/com/studylink/service` — contains the main application logic
-- `src/main/resources/static` — contains the frontend HTML, CSS, and JavaScript files
-- `src/main/resources/application.properties` — contains local database settings
-- `pom.xml` — Maven project configuration
+* `src/main/java/com/studylink/controller` — handles API requests
+* `src/main/java/com/studylink/model` — contains the entity/model classes
+* `src/main/java/com/studylink/repository` — contains database repositories
+* `src/main/java/com/studylink/service` — contains the main application logic
+* `src/main/resources/static` — contains the frontend HTML, CSS, and JavaScript files
+* `src/main/resources/application.properties` — contains local database settings
+* `pom.xml` — Maven project configuration
 
 ## Setup
 
 Before running the project, make sure you have:
 
-- Java 21
-- MySQL
-- A terminal or IDE that can run the Maven Wrapper
+* Java 21
+* MySQL
+* A terminal or IDE that can run the Maven Wrapper
 
 Create a MySQL database called `studylink`:
 
@@ -119,13 +126,17 @@ studylink/src/main/resources/static
 
 Main pages:
 
-- `index.html` — landing page
-- `register.html` — create an account
-- `login.html` — sign in page
-- `dashboard.html` — user dashboard
-- `study-groups.html` — search, create, and join study groups
-- `my-courses.html` — add and view courses
-- `account.html` — account page
+* `index.html` — landing page
+* `register.html` — create an account
+* `login.html` — sign in page
+* `dashboard.html` — user dashboard
+* `study-groups.html` — search, create, and join study groups
+* `group-details.html` — view group information, members, resources, and group actions
+* `my-study-groups.html` — view joined study groups
+* `my-courses.html` — add and view courses
+* `account.html` — account page
+* `notifications.html` — view notifications
+* `upcoming-sessions.html` — view upcoming sessions
 
 ## Backend Overview
 
@@ -133,15 +144,18 @@ The backend is organized into controllers, services, repositories, and models.
 
 The main backend areas are:
 
-- Account registration and prototype sign-in
-- User courses
-- Study groups
-- Group memberships
-- Messages
+* Account registration and prototype sign-in
+* User courses
+* Study groups
+* Group memberships
+* Study resources
+* Notifications
+* Study session retrieval
+* Messages
 
 Most backend routes are under `/api/...`.
 
-The project also includes some early model/service work for notifications and sessions, but those areas are not fully connected through controllers or the frontend yet.
+Notifications, resources, and upcoming-session display are connected through controllers and frontend pages. Full study session creation and the frontend messaging interface are not complete yet.
 
 ## Running Tests
 
@@ -159,22 +173,29 @@ sh ./mvnw test
 
 The MySQL database may need to be running for the tests to pass.
 
+The current automated tests mainly cover study group service behavior. More tests should be added for resources, notifications, messages, and study sessions.
+
 ## Notes
 
-- This project is a prototype for the current development phase.
-- Authentication is still basic and should be improved in a future version.
-- The current frontend sign-in flow is not production-ready and should be updated to fully validate user credentials.
-- Passwords should be secured with hashing before the app is used in a real environment.
-- The messaging backend exists, but a full frontend messaging interface is not complete yet.
-- Notification and session-related features are still incomplete or partially implemented.
-- The project is currently set up for local development with MySQL.
+* This project is a prototype for the current development phase.
+* Authentication is still basic and should be improved in a future version.
+* The current frontend sign-in flow is not production-ready and should be updated to fully validate user credentials.
+* Passwords should be secured with hashing before the app is used in a real environment.
+* Account changes are currently saved locally in the browser and are not fully saved to the backend.
+* The messaging backend exists, but a frontend messaging page is not complete yet.
+* Upcoming sessions can be viewed, but full study session creation is not complete.
+* Notifications can be viewed, but notification management is still limited.
+* The project is currently set up for local development with MySQL.
 
 ## Future Work
 
-- Improve the messaging system
-- Add real-time communication for group messages
-- Strengthen login and authentication security
-- Improve frontend responsiveness
-- Expand notification features
-- Add profile editing
-- Deploy the application to a cloud platform
+* Complete study session creation and management
+* Add a frontend messaging page
+* Add real-time communication for group messages
+* Strengthen login and authentication security
+* Save account changes to the backend
+* Expand notification features
+* Add administrator moderation tools
+* Add more automated tests
+* Improve frontend responsiveness
+* Deploy the application to a cloud platform
